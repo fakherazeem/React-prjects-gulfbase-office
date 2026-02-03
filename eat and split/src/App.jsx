@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialFriends = [
   {
     id: 118836,
@@ -19,37 +21,57 @@ const initialFriends = [
   },
 ];
 
+function Button({ children, onClick }) {
+  return (
+    <button className="button" onClick={onClick}>
+      {children}
+    </button>
+  );
+}
+
 export default function App() {
+  const [show, setShow] = useState(false);
+
+  function handleShow() {
+    setShow((show) => !show);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
         <FriendList />
-        <FormAddFriends />
-        <Button>Add Friends</Button>
+        {show && <FormAddFriends />}
+        <Button onClick={handleShow}>{show ? "Close" : "Add Friend"}</Button>
       </div>
       <FormSplitBill />
     </div>
   );
 }
+
 function FriendList() {
   const friends = initialFriends;
+
   return (
     <ul>
-      {friends.map((friends) => (
-        <li key={friends.id}>
-          <img src={friends.image} alt={friends.name} />
-          <h3>{friends.name}</h3>
-          {friends.balance < 0 && (
+      {friends.map((friend) => (
+        <li key={friend.id}>
+          <img src={friend.image} alt={friend.name} />
+          <h3>{friend.name}</h3>
+
+          {friend.balance < 0 && (
             <p className="red">
-              You owe {friends.name} {Math.abs(friends.balance)}
+              You owe {friend.name} {Math.abs(friend.balance)}
             </p>
           )}
-          {friends.balance > 0 && (
+
+          {friend.balance > 0 && (
             <p className="green">
-              {friends.name} owes you {Math.abs(friends.balance)}
+              {friend.name} owes you {Math.abs(friend.balance)}
             </p>
           )}
-          {friends.balance === 0 && <p>You and {friends.name} are even</p>}
+
+          {friend.balance === 0 && <p>You and {friend.name} are even</p>}
+
           <Button>Select</Button>
         </li>
       ))}
@@ -57,36 +79,41 @@ function FriendList() {
   );
 }
 
-function Button({ children }) {
-  return <button className="button">{children}</button>;
-}
 function FormAddFriends() {
   return (
     <form className="form-add-friend">
       <label>Friend Name</label>
-      <input type="text"></input>
+      <input type="text" />
+
       <label>Image URL</label>
-      <input type="text"></input>
+      <input type="text" />
+
       <Button>Add</Button>
     </form>
   );
 }
+
 function FormSplitBill() {
   return (
     <form className="form-split-bill">
       <h2>Split the bill with X</h2>
+
       <label>Bill Value</label>
-      <input type="text"></input>
+      <input type="text" />
+
       <label>Your expense</label>
-      <input type="text"></input>
-      <label>x expense</label>
-      <input type="text"></input>
+      <input type="text" />
+
+      <label>X expense</label>
+      <input type="text" />
+
       <label>Who is paying the bill</label>
       <select>
-        <option value="x">You</option>
-        <option value="y">Y</option>
-        <option value="z">Z</option>
+        <option value="you">You</option>
+        <option value="x">X</option>
       </select>
+
+      <Button>Split Bill</Button>
     </form>
   );
 }
