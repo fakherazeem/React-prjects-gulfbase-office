@@ -1,4 +1,4 @@
-import React from "react";
+ import React from "react";
 import { useState } from "react";
 
 const initialFriends = [
@@ -194,7 +194,7 @@ function FormSplitBill({
 
   return (
     <form className="form-split-bill" onSubmit={handleSubmit}>
-      <h2>Split the bill with {selected.name}</h2>
+      <h2>Split the bill with {selected.name} </h2>
 
       <label>Bill Value</label>
       <input
